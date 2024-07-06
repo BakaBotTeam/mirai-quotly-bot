@@ -81,7 +81,7 @@ object QuotLyCommand: SimpleCommand(
             "                  \"url\": \"${member.avatarUrl}\"\n" +
             "                }\n" +
             "              },\n" +
-            "              \"text\": \"${textMessage.replace("\n", "\\n")}\",\n" +
+            "              \"text\": \"${textMessage.replace("\n", "\\\\n").replace("\r", "\\\\r")}\",\n" +
             "            }\n" +
             "          ]\n" +
             "        }")
