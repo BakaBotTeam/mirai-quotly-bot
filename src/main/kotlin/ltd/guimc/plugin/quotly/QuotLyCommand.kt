@@ -63,7 +63,7 @@ object QuotLyCommand: SimpleCommand(
 
         var member = subject.cast<Group>().getOrFail(quote.source.fromId)
 
-        val postValue = JSONObject(
+        val postValue =
             "        {\n" +
             "          \"type\": \"quote\",\n" +
             "          \"format\": \"png\",\n" +
@@ -81,14 +81,17 @@ object QuotLyCommand: SimpleCommand(
             "                  \"url\": \"${member.avatarUrl}\"\n" +
             "                }\n" +
             "              },\n" +
-            "              \"text\": \"${textMessage.replace("\n", "\\\\n").replace("\r", "\\\\r")}\",\n" +
+            "              \"text\": \"${textMessage.replace("\\n", "\\\\n")
+                .replace("\n", "\\n")
+                .replace("\\r", "\\\\r")
+                .replace("\r", "\\r")}\",\n" +
             "            }\n" +
             "          ]\n" +
-            "        }")
+            "        }"
 
         cooldown.flag(user!!)
         try {
-            val rawResp = JSONObject(HttpUtil.post("http://127.0.0.1:3000/generate", postValue.toString()))
+            val rawResp = JSONObject(HttpUtil.post("http://127.0.0.1:3000/generate", postValue))
             val resp = rawResp.getJSONObject("result").getString("image")
             if (!OverflowUtils.checkOverflowCore()) {
                 sendMessage(ImageUtils.base642imageMessage(resp, bot!!, subject!!))
