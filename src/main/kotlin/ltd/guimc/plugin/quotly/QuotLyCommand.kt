@@ -80,17 +80,13 @@ object QuotLyCommand: SimpleCommand(
             "                \"photo\": {\n" +
             "                  \"url\": \"${member.avatarUrl}\"\n" +
             "                }\n" +
-            "              },\n" +
-            "              \"text\": \"${textMessage.replace("\\", "\\\\")
-                                                    .replace("\r", "\\r")
-                                                    .replace("\n", "\\n")
-                                                    .replace("\t", "\\t")
-                                                    .replace("\"", "\\\"")}\",\n" +
+            "              }\n" +
             "            }\n" +
             "          ]\n" +
             "        }")
 
         cooldown.flag(user!!)
+        postValue.getJSONArray("messages").getJSONObject(0).put("text", textMessage)
         try {
             val rawResp = JSONObject(HttpUtil.post("http://127.0.0.1:3000/generate", postValue.toString()))
             val resp = rawResp.getJSONObject("result").getString("image")
