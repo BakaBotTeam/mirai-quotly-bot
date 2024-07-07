@@ -81,10 +81,10 @@ object QuotLyCommand: SimpleCommand(
             "                  \"url\": \"${member.avatarUrl}\"\n" +
             "                }\n" +
             "              },\n" +
-            "              \"text\": \"${textMessage.replace("\\n", "\\\\n")
-                .replace("\n", "\\n")
-                .replace("\\r", "\\\\r")
-                .replace("\r", "\\r")}\",\n" +
+            "              \"text\": \"${textMessage.replace("\\", "\\\\")
+                                                    .replace("\r", "\\r")
+                                                    .replace("\n", "\\n")
+                                                    .replace("\t", "\\t")}\",\n" +
             "            }\n" +
             "          ]\n" +
             "        }")
