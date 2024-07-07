@@ -84,7 +84,8 @@ object QuotLyCommand: SimpleCommand(
             "              \"text\": \"${textMessage.replace("\\", "\\\\")
                                                     .replace("\r", "\\r")
                                                     .replace("\n", "\\n")
-                                                    .replace("\t", "\\t")}\",\n" +
+                                                    .replace("\t", "\\t")
+                                                    .replace("\"", "\\\"")}\",\n" +
             "            }\n" +
             "          ]\n" +
             "        }")
