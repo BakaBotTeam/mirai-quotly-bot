@@ -11,6 +11,8 @@ import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.contact.nameCardOrNick
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.message.data.*
+import net.mamoe.mirai.message.data.Image.Key.queryUrl
+import org.json.JSONArray
 import org.json.JSONObject
 import top.mrxiaom.overflow.OverflowAPI
 import xyz.cssxsh.mirai.hibernate.MiraiHibernateRecorder
@@ -59,7 +61,19 @@ object QuotLyCommand: SimpleCommand(
         }
 
         val quote = fromEvent.message.findIsInstance<QuoteReply>() ?: return@launch
-        var textMessage = quote.source.originalMessage.contentToString()
+        var textMessage = ""
+        var image = ""
+        for (singleMessage in quote.source.originalMessage) {
+            textMessage += when (singleMessage) {
+                is At -> "@${subject.cast<Group>().getOrFail(singleMessage.target).nameCardOrNick}"
+                is Image -> {
+                    image = singleMessage.queryUrl()
+                    ""
+                }
+                is RichMessage -> "[卡片消息]"
+                else -> singleMessage.contentToString()
+            }
+        }
 
         var member = subject.cast<Group>().getOrFail(quote.source.fromId)
 
@@ -87,13 +101,16 @@ object QuotLyCommand: SimpleCommand(
 
         cooldown.flag(user!!)
         postValue.getJSONArray("messages").getJSONObject(0).put("text", textMessage)
+        if (image != "") {
+            postValue.getJSONArray("messages").getJSONObject(0).put("media", JSONObject().put("url", image))
+        }
         try {
             val rawResp = JSONObject(HttpUtil.post("http://127.0.0.1:3000/generate", postValue.toString()))
             val resp = rawResp.getJSONObject("result").getString("image")
             if (!OverflowUtils.checkOverflowCore()) {
                 sendMessage(ImageUtils.base642imageMessage(resp, bot!!, subject!!))
             } else {
-                sendMessage(OverflowAPI.get().imageFromFile("base64://"+resp))
+                sendMessage(OverflowAPI.get().imageFromFile("base64://$resp"))
             }
         } catch (e: Throwable) {
             sendMessage("Oops, something went wrong.")
