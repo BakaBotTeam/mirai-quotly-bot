@@ -15,7 +15,6 @@ import net.mamoe.mirai.message.data.Image.Key.queryUrl
 import org.json.JSONArray
 import org.json.JSONObject
 import top.mrxiaom.overflow.OverflowAPI
-import xyz.cssxsh.mirai.hibernate.MiraiHibernateRecorder
 
 
 object QuotLyCommand: SimpleCommand(
@@ -105,7 +104,7 @@ object QuotLyCommand: SimpleCommand(
             postValue.getJSONArray("messages").getJSONObject(0).put("media", JSONObject().put("url", image))
         }
         try {
-            val rawResp = JSONObject(HttpUtil.post("http://127.0.0.1:3000/generate", postValue.toString()))
+            val rawResp = JSONObject(HttpUtil.post("http://127.0.0.1:25802/generate", postValue.toString()))
             val resp = rawResp.getJSONObject("result").getString("image")
             if (!OverflowUtils.checkOverflowCore()) {
                 sendMessage(ImageUtils.base642imageMessage(resp, bot!!, subject!!))

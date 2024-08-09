@@ -21,7 +21,6 @@ object PluginMain : KotlinPlugin(
         "QuotlyBot",
     ){
         author("BakaBotTeam")
-        dependsOn("xyz.cssxsh.mirai.plugin.mirai-hibernate-plugin", false)
     }
 ) {
     override fun onEnable() {

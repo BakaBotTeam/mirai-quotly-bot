@@ -13,9 +13,7 @@ dependencies {
     implementation("org.apache.httpcomponents:httpclient:4.5.14")
 
     compileOnly("top.mrxiaom:overflow-core-api:$overflow_version")
-    compileOnly("xyz.cssxsh.mirai:mirai-hibernate-plugin:2.8.0")
     compileOnly("top.mrxiaom:overflow-core:$overflow_version")
-    // testImplementation("xyz.cssxsh.mirai:mirai-hibernate-plugin:2.8.0")
 
     compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 }
